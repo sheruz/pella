@@ -1,59 +1,213 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel Admin API - Role & Permission Based Backend
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A robust, enterprise-level Laravel 11 API backend for managing users, roles, and permissions. Built with **Laravel Sanctum** for authentication and **Spatie Laravel Permission** for advanced role-based access control.
 
-## About Laravel
+## 🚀 Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- ✅ **Laravel Sanctum** API Token Authentication
+- ✅ **Spatie Laravel Permission** - Enterprise-grade role & permission management
+- ✅ **Form Requests** - Clean validation logic separation
+- ✅ **API Resources** - Secure, formatted JSON responses
+- ✅ **RESTful API** - Following Laravel API First architecture
+- ✅ **SQLite Database** - Lightweight, no MySQL setup required
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 📋 Prerequisites
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP >= 8.2
+- Composer
+- SQLite (included with PHP)
 
-## Learning Laravel
+## 🔧 Installation & Setup
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### Step 1: Navigate to the Laravel API Directory
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```bash
+cd laravel-admin-api
+```
 
-## Laravel Sponsors
+### Step 2: Install Dependencies
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+composer install
+```
 
-### Premium Partners
+### Step 3: Configure Environment
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Copy the `.env.example` file to `.env`:
 
-## Contributing
+```bash
+cp .env.example .env
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+The default configuration uses SQLite, which requires no additional database setup. If you want to use MySQL instead, edit `.env`:
 
-## Code of Conduct
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=your_database_name
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Step 4: Generate Application Key
 
-## Security Vulnerabilities
+```bash
+php artisan key:generate
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Step 5: Run Migrations & Seed Database
 
-## License
+This will create all necessary tables and seed an admin user:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+php artisan migrate --seed
+```
+
+**Default Admin Credentials:**
+- Email: `admin@admin.com`
+- Password: `password`
+
+**Default Editor Credentials:**
+- Email: `editor@editor.com`
+- Password: `password`
+
+### Step 6: Start the Development Server
+
+```bash
+php artisan serve
+```
+
+The API will be available at: **http://localhost:8000**
+
+## 📡 API Endpoints
+
+### Authentication Endpoints
+
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| POST | `/api/login` | Login and receive token | No |
+| POST | `/api/logout` | Logout and revoke token | Yes |
+| GET | `/api/me` | Get current authenticated user | Yes |
+
+### User Management Endpoints (Admin Only)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/users` | List all users (paginated) |
+| POST | `/api/users` | Create a new user |
+| GET | `/api/users/{id}` | Get a specific user |
+| PUT | `/api/users/{id}` | Update a user |
+| DELETE | `/api/users/{id}` | Delete a user |
+
+### Role Endpoints (Admin Only)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/roles` | List all available roles |
+
+## 🔐 Authentication
+
+All protected endpoints require a Bearer token in the Authorization header:
+
+```
+Authorization: Bearer {your-token-here}
+```
+
+### Example Login Request
+
+```bash
+curl -X POST http://localhost:8000/api/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "admin@admin.com",
+    "password": "password"
+  }'
+```
+
+### Example Authenticated Request
+
+```bash
+curl -X GET http://localhost:8000/api/users \
+  -H "Authorization: Bearer {your-token-here}"
+```
+
+## 🎯 Roles & Permissions
+
+The system comes pre-configured with:
+
+- **Admin Role**: Full access to manage users and roles
+  - Permissions: `manage users`, `view users`
+- **Editor Role**: Read-only access
+  - Permissions: `view users`
+
+You can extend this by creating new roles and permissions using Spatie's methods:
+
+```php
+$role = Role::create(['name' => 'manager']);
+$permission = Permission::create(['name' => 'edit posts']);
+$role->givePermissionTo($permission);
+```
+
+## 📁 Project Structure
+
+```
+laravel-admin-api/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │   └── Api/
+│   │   │       ├── AuthController.php
+│   │   │       ├── UserController.php
+│   │   │       └── RoleController.php
+│   │   ├── Requests/
+│   │   │   ├── Auth/
+│   │   │   │   └── LoginRequest.php
+│   │   │   └── User/
+│   │   │       ├── StoreUserRequest.php
+│   │   │       └── UpdateUserRequest.php
+│   │   └── Resources/
+│   │       ├── UserResource.php
+│   │       └── RoleResource.php
+│   └── Models/
+│       └── User.php
+├── database/
+│   ├── migrations/
+│   └── seeders/
+│       └── DatabaseSeeder.php
+└── routes/
+    └── api.php
+```
+
+## 🛠️ Development
+
+### Running Tests
+
+```bash
+php artisan test
+```
+
+### Clearing Cache
+
+```bash
+php artisan cache:clear
+php artisan config:clear
+php artisan route:clear
+```
+
+### Resetting Database
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+## 🔒 Security Notes
+
+- Passwords are automatically hashed using Laravel's `Hash` facade
+- API tokens are stored securely using Laravel Sanctum
+- CORS is configured to allow requests from the Next.js frontend
+- All validation is handled via Form Requests
+
+## 📝 License
+
+This project is part of the Pella assignment submission.
