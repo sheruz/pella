@@ -1,0 +1,20 @@
+<?php
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\RoleController;
+
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/me', [AuthController::class, 'me']);
+
+    // Admin Panel Routes
+    Route::middleware('role:admin')->group(function () {
+        Route::apiResource('users', UserController::class);
+        Route::get('roles', [RoleController::class, 'index']);
+    });
+});

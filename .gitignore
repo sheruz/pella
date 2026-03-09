@@ -1,0 +1,16 @@
+# Laravel Backend
+laravel-admin-api/vendor/
+laravel-admin-api/.env
+laravel-admin-api/database/database.sqlite
+laravel-admin-api/storage/*.key
+
+# Next.js Frontend
+next-admin-frontend/node_modules/
+next-admin-frontend/.next/
+next-admin-frontend/out/
+next-admin-frontend/build/
+next-admin-frontend/.env*.local
+
+# System Files
+.DS_Store
+Thumbs.db
